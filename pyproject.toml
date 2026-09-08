@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mergen"
+version = "0.1.0"
+description = "Experimental unsupervised-learning and anomaly-detection framework for time-series astrophysics workflows."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "Tansu Daylan", email = "tansu.daylan@gmail.com" }
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Astronomy"
+]
+dependencies = [
+  "astropy",
+  "astroquery",
+  "matplotlib",
+  "numpy",
+  "pandas",
+  "scipy",
+  "scikit-learn",
+  "tensorflow",
+  "tf-keras-vis",
+  "miletos",
+  "ephesos",
+  "tdpy"
+]
+
+[tool.setuptools.packages.find]
+include = ["mergen*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test*.py", "tests.py"]

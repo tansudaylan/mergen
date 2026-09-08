@@ -1,4 +1,5 @@
 #
+from . import catalog_utils, util
 from .mergen import *
 
 #utilities
@@ -54,9 +55,15 @@ from scipy.optimize import linear_sum_assignment
 # from sklearn.metrics import confusion_matrix
 # from sklearn.neighbors import LocalOutlierFactor
 
-#tensorflow
-#import tensorflow as tf
+# tensorflow is optional: the package is usable in non-ML environments
+# but deep-learning routines require the full stack.
+try:
+    import tensorflow as tf
+except ModuleNotFoundError:
+    tf = None
 
-# from tf_keras_vis.saliency import Saliency
-# import ephesus.ephesus.util as ephesus
+try:
+    from tf_keras_vis.saliency import Saliency
+except ModuleNotFoundError:
+    Saliency = None
 

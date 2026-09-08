@@ -2659,10 +2659,10 @@ def sector_dists(data_dir, sector, output_dir='./', figsize=(3,3)):
             ax.set_xlabel('$T_{eff}$ [K]')
             suffix='-Teff'
         elif i == 1:
-            ax.set_xlabel('Radius [$R_{\odot}$]')
+            ax.set_xlabel(r'Radius [$R_{\odot}$]')
             suffix='-rad'
         elif i == 2:
-            ax.set_xlabel('Mass [$M_{\odot}$]')
+            ax.set_xlabel(r'Mass [$M_{\odot}$]')
             suffix='-mass'
         elif i == 3:
             ax.set_xlabel('GAIA Mag')

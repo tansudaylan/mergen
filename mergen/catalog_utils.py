@@ -2,6 +2,8 @@
 """
 Created on Thu Feb 25 18:14:55 2021
 
+import tdpy
+
 @author: Emma Chickles, Lindsey Gordon
 catalog_utils.py
 
@@ -273,8 +275,9 @@ def query_simbad_classifications(ticid_list, output_dir='./', suffix=''):
 
 
 def query_vizier(ticid_list=None, out='./SectorX_GCVS.txt', catalog='gcvs',
-                 dat_dir = '/Users/studentadmin/Dropbox/TESS_UROP/data/',
-                 sector=20):
+                 dat_dir=None, sector=20):
+    if dat_dir is None:
+        dat_dir = tdpy.retr_pathbase('mergen')
     '''http://www.sai.msu.su/gcvs/gcvs/vartype.htm'''
     
     # Vizier.ROW_LIMIT=-1
@@ -343,7 +346,9 @@ def query_vizier(ticid_list=None, out='./SectorX_GCVS.txt', catalog='gcvs',
                 
     return ticid_viz, otypes_viz, main_id_viz
 
-def get_otype_dict(data_dir='/Users/studentadmin/Dropbox/TESS_UROP/data/'):
+def get_otype_dict(data_dir=None):
+    if data_dir is None:
+        data_dir = tdpy.retr_pathbase('mergen')
     '''Return a dictionary of descriptions'''
     # d = {'a2': 'Variable Star of alpha2 CVn type',
     #      'ACYG': 'Variables of the Alpha Cygni type',

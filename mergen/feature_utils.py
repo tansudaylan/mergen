@@ -62,7 +62,7 @@ def create_save_featvec_homogenous_time(yourpath, times, intensities, filelabel,
     return feature_list
 
 def featvec(x_axis, sampledata, ticid=None, v=0): 
-    """calculates the feature vector of a single light curve
+    r"""calculates the feature vector of a single light curve
         version 0: features 0-15
         version 1: features 0-19
         0 - Average -  lower alpha

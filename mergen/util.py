@@ -6,6 +6,11 @@ import sklearn.decomposition
 import tdpy
 
 
+def retr_pathbase():
+    """Return the normalized Mergen data root from the environment."""
+    return tdpy.retr_pathbase('mergen')
+
+
 def exec_prca_skit(listvarb, numbcomp=None, verbtype=2):
     '''
     Execute PCA decomposition using sklearn
