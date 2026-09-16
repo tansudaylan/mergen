@@ -31,6 +31,8 @@ from . import catalog_utils as ct
 from . import plot_utils    as pt
 from . import feature_utils as ft
 
+import miletos
+
 class mergen(object):
     """ Main mergen class. Initialize this to work with everything else
     conveniently. """
@@ -212,7 +214,73 @@ class mergen(object):
                             output_dir=self.featpath+'model/',
                             batch_fnames=self.batch_fnames,
                             params=self.parampath)
+
+    def init_path(self):
+        """Make folders"""
+
+        print("Setting up CAE folder...")
+        self.pathcaen = self.pathbase + "caen/"
+        os.system('mkdir -p %s' % self.pathcaen)
+
+        print("Setting up ENF folder")
+        self.pathfeng = self.pathbase + "feng/"
+        os.system('mkdir -p %s' % self.pathfeng)
+
+        return
+
+    def load_lightcurves_local(self):
+        """Load in data saved in metafiles"""
+        #check for self.datatype to determine loading scheme. 
+        #figure out consistent stuff for FFI original locations
+        if self.datatype == "lygos":
+            self.times, self.intensities, self.errors, self.identifiers = \
+            dt.load_all_lygos(self.pathbase)
+        elif self.datatype == "SPOC":
+            self.times, self.intensities, self.ticid, self.target_info = \
+            dt.load_data_from_metafiles(self.pathbase, self.tsec)
         
+    def download_lightcurves(self):
+        """
+        Downloads and process light SPOC light curves, if not already downloaded.
+        """
+        
+        dt.bulk_download_helper(pathbase, tsec=self.tsec)
+        dt.data_access_sector_by_bulk(pathbase, tsec=self.tsec)
+
+    def data_clean(self):
+        """ Cleans data up - just BASE cleanup of normalizing."""
+        
+        self.intensities = dt.normalize(self.intensities)
+        
+        return
+
+    def load_existing_features(self, typeFeatures):
+        """ Load in feature metafiles stored in the pathbase"""
+        
+        if typeFeatures == "ENF":
+            self.features = dt.load_ENF_feature_metafile(self.ENFpath)
+        elif typeFeatures == "CAE":
+            ### EMMA FILL THIS IN
+            k = 6
+        
+        return
+    
+    def engineer_features(self, version=0, boolsave=True):
+        """Run engineered feature creation"""
+       
+        self.features = ft.create_save_featvec_homogenous_time(self.ENFpath, \
+                                                              self.times, \
+                                                              self.intensities, \
+                                                              self.filelabel, \
+                                                              version=version, \
+                                                              boolsave=boolsave)
+        return
+
+    def train_caen(self):
+        """
+        Train convolutional autoencoder.
+        """
+        return
 
     def generate_cae_features(self, save=True):
         """Train convolutional autoencoder to extract representative
@@ -282,6 +350,10 @@ class mergen(object):
         """Reduces dimensionality of feature space for visualization."""
         self.tsne = lt.run_tsne(self.feats, savepath=self.featpath+'model/')
 
+    def init(self):
+        """Placeholder initialization hook for lightweight workflow setup."""
+        return
+
     def generate_predicted_otypes(self):
         """Predicts object types using known classifications.
         Returns:
@@ -329,13 +401,13 @@ class mergen(object):
         self.generate_clusters()
         self.generate_predicted_otypes()
         self.numerize_otypes()
-        
+
         self.generate_novelty_scores()
-        
+
     def run_vis(self):
         pt.produce_latent_space_vis(self.feats, self.clstr, self.tsne,
                                     self.featpath+'imgs/', self.clstrmeth,
-                                    self.numclstr, self.numtot, self.otdict, 
+                                    self.numclstr, self.numtot, self.otdict,
                                     self.objid,
                                     self.datapath)
         # self.produce_clustering_visualizations()
