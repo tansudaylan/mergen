@@ -109,7 +109,11 @@ import numpy as np
 import numpy.ma as ma 
 # import pandas as pd 
 import matplotlib.pyplot as plt
-from mpl_toolkits.axes_grid1.inset_locator import (inset_axes, InsetPosition, mark_inset)     
+try:
+    from mpl_toolkits.axes_grid1.inset_locator import inset_axes, mark_inset, InsetPosition
+except ImportError:
+    from mpl_toolkits.axes_grid1.inset_locator import inset_axes, mark_inset
+    InsetPosition = None
 
 import pdb # >> debugging tool
 # import model as ml
@@ -1412,11 +1416,11 @@ def isolate_plot_feature_outliers(path, sector, features, time, flux, ticids, ta
     
     #rcParams['figure.figsize'] = 8,3
     if version==0:
-        features_greek = [r'$\alpha$', 'B', r'$\Gamma$', r'$\Delta$', r'$\beta$', r'$\gamma$',r'$\delta$',
+        features_greek = [r'$\alpha$', 'B', r'$\Gamma$', r'$\Delta$', r'$\beta$', r'$\gamma$', r'$\delta$',
                   "E", r'$\epsilon$', "Z", "H", r'$\eta$', r'$\Theta$', "I", "K", r'$\Lambda$', "M", r'$\mu$'
-                  ,"N", r'$\nu$']
+                  , "N", r'$\nu$']
     elif version==1: 
-        features_greek = ["M", r'$\mu$',"N", r'$\nu$']
+        features_greek = ["M", r'$\mu$', "N", r'$\nu$']
 
     outlier_indexes = []
     for i in range(len(features[0])):
